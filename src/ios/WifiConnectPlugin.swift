@@ -52,16 +52,15 @@ class WifiCheckPlugin: UIViewController {
 		
         // Calls function to verify Wi-Fi Network
         if let conn_ssid = getWiFiSSID() {
-            print("Connected to: \(conn_ssid)")
             
             // Verify if the connected SSID is the same we want to check
             if conn_ssid == ssid {
-                print("You are connected!")
+				let IsConnected = true
             } else {
-                print("You are not connected.")
+				let IsConnected = false
             }
         } else {
-            print("It was not possible to verify the SSID.")
+				let IsConnected = false
         }
     }
     
