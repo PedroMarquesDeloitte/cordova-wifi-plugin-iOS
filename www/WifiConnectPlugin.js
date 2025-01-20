@@ -5,5 +5,5 @@ exports.connectToWifi = function (ssid, password, success, error) {
 };
 
 exports.checkWifi = function (ssid, success, error) {
-    exec(success, error, 'WifiCheckPlugin', 'checkWifi', ssid);
+    exec(success, error, 'WifiConnectPlugin', 'getWiFiSSID', ssid);
 };
