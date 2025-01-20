@@ -1,5 +1,7 @@
 import NetworkExtension
 import Foundation
+import UIKit
+import SystemConfiguration.CaptiveNetwork
 
 @objc(WifiConnectPlugin)
 class WifiConnectPlugin: CDVPlugin {
@@ -37,5 +39,42 @@ class WifiConnectPlugin: CDVPlugin {
                 }
             }
         }
+    }
+}
+
+@objc(WifiCheckPlugin)
+class WifiCheckPlugin: UIViewController {
+    
+	@objc(checkWifi:)
+    override func viewDidLoad(command: CDVInvokedUrlCommand) {
+        super.viewDidLoad()
+        let ssid = command.argument(at: 0) as? String ?? ""
+		
+        // Calls function to verify Wi-Fi Network
+        if let conn_ssid = getWiFiSSID() {
+            print("Connected to: \(conn_ssid)")
+            
+            // Verify if the connected SSID is the same we want to check
+            if conn_ssid == ssid {
+                print("You are connected!")
+            } else {
+                print("You are not connected.")
+            }
+        } else {
+            print("It was not possible to verify the SSID.")
+        }
+    }
+    
+    func getWiFiSSID() -> String? {
+        if let interfaces = CNCopySupportedInterfaces() as? [String] {
+            for interface in interfaces {
+                if let dict = CNCopyCurrentNetworkInfo(interface as CFString) as NSDictionary? {
+                    if let conn_ssid = dict[kCNNetworkInfoKeySSID as String] as? String {
+                        return conn_ssid
+                    }
+                }
+            }
+        }
+        return nil
     }
 }
