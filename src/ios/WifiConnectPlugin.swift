@@ -1,6 +1,5 @@
 import NetworkExtension
 import Foundation
-import SystemConfiguration.CaptiveNetwork
 
 @objc(WifiConnectPlugin)
 class WifiConnectPlugin: CDVPlugin {
@@ -40,17 +39,4 @@ class WifiConnectPlugin: CDVPlugin {
         }
     }
 
-	@objc(getWiFiSSID:)
-    func getWiFiSSID() -> String? {
-        if let interfaces = CNCopySupportedInterfaces() as? [String] {
-            for interface in interfaces {
-                if let dict = CNCopyCurrentNetworkInfo(interface as CFString) as NSDictionary? {
-                    if let ssid = dict[kCNNetworkInfoKeySSID as String] as? String {
-                        return ssid
-                    }
-                }
-            }
-        }
-        return nil
-    }
 }
